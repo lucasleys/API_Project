@@ -80,7 +80,7 @@ async def get_nearby_location(location):
 async def create_product(wanted_product: given_product):
     wanted_products = {}
     for i in range(50):
-        if wanted_product.dict() not in wanted_products:
+        if wanted_product.dict() not in wanted_products.values():
             wanted_products.setdefault(i, wanted_product)
             return wanted_product
         return {"error":"product already listed"}
