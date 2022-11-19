@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
@@ -48,14 +48,14 @@ locations = {1: {'postcode': '2350', 'locatie': 'vosselaar'},
 
 
 @app.get("/{categorie}/{product}/{prijs}")
-async def get_product(categorie: str, product: str, prijs : float):
+async def get_product(categorie: str = Query(default=None), product: str = Query(default="n"), prijs : float = Query(default=0)):
     cat_results = {}
     prijs_results = {}
-
+    print("categorie: " + categorie)
     if categorie:
         for i in products:
             if categorie == products[i]['categorie']:
-                cat_results += (products[i]['product'] + products[i]['prijs'])
+                cat_results[i] = products[i]
         return cat_results
     if product:
         for i in products:
@@ -63,8 +63,8 @@ async def get_product(categorie: str, product: str, prijs : float):
                 return products[i]['product'] + products[i]['prijs']
     if prijs:
         for i in products:
-            if categorie == products[i]['prijs']:
-                prijs_results += (products[i]['categorie'] + products[i]['product'] + products[i]['prijs'])
+            if prijs == products[i]['prijs']:
+                prijs_results[i] = products[i]
         return prijs_results
 
 
@@ -79,8 +79,9 @@ async def get_nearby_location(location):
 @app.post("/")
 async def create_product(wanted_product: given_product):
     wanted_products = {}
-    if wanted_product not in wanted_products:
-        wanted_products += {'naam': wanted_product.naam, 'prijs': wanted_product.prijs, 'categorie': wanted_product.categorie}
-        return wanted_product
-    return {"error":"product already listed"}
+    for i in range(50):
+        if wanted_product.dict() not in wanted_products:
+            wanted_products.setdefault(i, wanted_product)
+            return wanted_product
+        return {"error":"product already listed"}
 
