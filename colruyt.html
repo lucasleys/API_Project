@@ -19,16 +19,18 @@
     </div>
     <div x-data="{
         categorie : null,
-        product: null,
+        products: null,
         async getProducts() {
-            this.product = await (await fetch('http://127.0.0.1:8000/product/' + this.categorie)).json();
+            this.products = await (await fetch('http://127.0.0.1:8000/product/' + this.categorie)).json();
+            console.log('categorie: ', this.categorie);
+            console.log(this.products);
         }
     }">
         <input type="text" x-model="categorie">
         <button @click="getProducts()">Indienen</button>
-        Data returned:
-            <strong x-text="product[0][2].prijs">Placeholder</strong>
-        </div>
+        <template x-for="product in products">
+            <div><span x-text="product.categorie"></span> <span x-text="product.product"></span> <span x-text="product.prijs"></span></div>
+        </template>
     </div>
 </body>
 </html>
