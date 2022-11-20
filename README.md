@@ -1,5 +1,5 @@
-# API_Project
-## List of chapters
+# API Project
+## A list of contents
 - [Intro](#intro)
 - [Function](#function)
 - [Backend](#backend)
@@ -21,6 +21,8 @@ Link: https://api-lucasleys.cloud.okteto.net
 In case that the api backend does not work anymore could be related to the api entering sleep mode. So if this happened, give me a heads up!
 ## Frontend
 It is easier to communicate through a frontend with an api. So i made one and it's available at: https://lucasleys.github.io/API_Project
+In case of the frontend being down, you can find a screen below:
+![image](https://github.com/lucasleys/API_Project/blob/main/images/frontend.png)
 ## Postman screenshots
 - Screen of the result when the api is used for giving the nearest branch location through postman.  
 ![image](https://github.com/lucasleys/API_Project/blob/main/images/filiaal_suc.png)
