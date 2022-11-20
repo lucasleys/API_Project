@@ -50,24 +50,27 @@
         </div>
     </div>
     <div>
-        <template x-for="product in products">
-            <table class="table table-dark">
-                <thead>
-                <tr>
-                    <th scope="col">Categorie</th>
-                    <th scope="col">Product</th>
-                    <th scope="col">Prijs</th>
-                </tr>
-                </thead>
-                <tbody>
+        <table class="table table-dark">
+            <thead>
+            <tr>
+                <th scope="col">Categorie</th>
+                <th scope="col">Product</th>
+                <th scope="col">Prijs</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <template x-for="product in products">
+
                 <tr>
                     <td><span x-text="product.categorie"></span></td>
                     <td><span x-text="product.product"></span></td>
                     <td><span x-text="product.prijs"></span></td>
                 </tr>
-                </tbody>
-            </table>
-        </template>
+
+            </template>
+            </tbody>
+        </table>
     </div>
 </div>
 </body>
