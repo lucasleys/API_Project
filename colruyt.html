@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script defer src="https://unpkg.com/alpinejs@3.5.0/dist/cdn.min.js"></script>
+    <title>Colruyt</title>
+</head>
+<body>
+    <div x-data="{
+        postcode: null,
+        locatie: null,
+        async getFiliaal() {
+            this.locatie = await (await fetch('http://127.0.0.1:8000/filiaal/' + this.postcode)).json();
+        }
+    }">
+        <input type="text" x-model="postcode">
+        <button @click="getFiliaal()">Indienen</button>
+        Data returned: <strong x-text="locatie.locatie">Placeholder</strong>
+    </div>
+    <div x-data="{
+        categorie : null,
+        product: null,
+        async getProducts() {
+            this.product = await (await fetch('http://127.0.0.1:8000/product/' + this.categorie)).json();
+        }
+    }">
+        <input type="text" x-model="categorie">
+        <button @click="getProducts()">Indienen</button>
+        Data returned:
+        <strong x-text="product.categorie">Placeholder</strong>
+        <strong x-text="product.product">Placeholder</strong>
+        <strong x-text="product.prijs">Placeholder</strong>
+    </div>
+</body>
+</html>
