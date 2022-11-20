@@ -3,21 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <script defer src="https://unpkg.com/alpinejs@3.5.0/dist/cdn.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <title>Colruyt</title>
 </head>
 <body>
-    <div x-data="{
+<!-- As a heading -->
+<nav class="navbar navbar-dark bg-dark mb-5">
+    <span class="navbar-brand mx-3 text-center h1">Colruyt API</span>
+</nav>
+<h2 class="mx-3">Zoek een filiaal op postcode</h2>
+<div class="m-3" x-data="{
         postcode: null,
         locatie: null,
         async getFiliaal() {
             this.locatie = await (await fetch('https://api-lucasleys.cloud.okteto.net/filiaal/' + this.postcode)).json();
         }
     }">
-        <input type="text" x-model="postcode">
-        <button @click="getFiliaal()">Indienen</button>
-        Data returned: <strong x-text="locatie.locatie">Placeholder</strong>
+
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Geef de postcode in" aria-label="Recipient's username"
+               aria-describedby="basic-addon2" x-model="postcode">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" @click="getFiliaal()">Zoeken</button>
+        </div>
     </div>
-    <div x-data="{
+    <p>Filialen in de buurt:
+    <p></p> <strong x-text="locatie.locatie">Placeholder</strong>
+</div>
+<h2 class="mx-3">Zoek producten op categorie</h2>
+<div class="m-3" x-data="{
         categorie : null,
         products: null,
         async getProducts() {
@@ -26,11 +41,34 @@
             console.log(this.products);
         }
     }">
-        <input type="text" x-model="categorie">
-        <button @click="getProducts()">Indienen</button>
+
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Geef een categorie in" aria-label="Recipient's username"
+               aria-describedby="basic-addon2" x-model="categorie">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" @click="getProducts()">Zoeken</button>
+        </div>
+    </div>
+    <div>
         <template x-for="product in products">
-            <div><span x-text="product.categorie"></span> <span x-text="product.product"></span> <span x-text="product.prijs"></span></div>
+            <table class="table table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Categorie</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Prijs</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><span x-text="product.categorie"></span></td>
+                    <td><span x-text="product.product"></span></td>
+                    <td><span x-text="product.prijs"></span></td>
+                </tr>
+                </tbody>
+            </table>
         </template>
     </div>
+</div>
 </body>
 </html>
