@@ -4,8 +4,8 @@
 - [Function](#function)
 - [Backend](#backend)
 - [Frontend](#frontend)
-- [Postman Screenshots](#Postman screenshots)
-- [API docs Screenshots](#API docs screenshots)
+- [Postman Screenshots](#Postman-screenshots)
+- [API docs Screenshots](#API-docs-screenshots)
 - [Author](#author)
 ## Intro
  This repository contains my Colruyt api. I choose this subject because i work at colruyt as a student. This is not the only reason, during the periods that i work there i consumed a lot of knowledge about the products. So it was easy to implement this in an api.
