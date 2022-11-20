@@ -7,16 +7,13 @@ from pydantic import BaseModel
 class given_product(BaseModel):
     naam: str
     prijs: float
-    categorie: str | None = None
+    categorie: str
 
 
 app = FastAPI()
 
 origins = [
-    "http://localhost",
-    "http://localhost:8080",
-    "https://localhost.tiangolo.com",
-    "http://127.0.0.1:5500"
+    "*"
 ]
 
 app.add_middleware(
@@ -27,14 +24,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-products = {1: {'categorie': 'zuivel', 'product': 'kaas', 'prijs': '1.50'},
-            2: {'categorie': 'vlees', 'product': 'biefstuk', 'prijs': '2.30'},
-            3: {'categorie': 'diepvries', 'product': 'frieten', 'prijs': '1.20'},
-            4: {'categorie': 'koeling', 'product': 'ham', 'prijs': '3.40'},
-            5: {'categorie': 'zuivel', 'product': 'melk', 'prijs': '1.30'},
-            6: {'categorie': 'vlees', 'product': 'kip', 'prijs': '2.50'},
-            7: {'categorie': 'diepvries', 'product': 'erwten', 'prijs': '0.70'},
-            8: {'categorie': 'koeling', 'product': 'yoghurt', 'prijs': '1.10'}}
+products = {1: {'categorie': 'zuivel', 'product': 'kaas', 'prijs': 1.50},
+            2: {'categorie': 'vlees', 'product': 'biefstuk', 'prijs': 2.30},
+            3: {'categorie': 'diepvries', 'product': 'frieten', 'prijs': 1.20},
+            4: {'categorie': 'koeling', 'product': 'ham', 'prijs': 3.40},
+            5: {'categorie': 'zuivel', 'product': 'melk', 'prijs': 1.30},
+            6: {'categorie': 'vlees', 'product': 'kip', 'prijs': 2.50},
+            7: {'categorie': 'diepvries', 'product': 'erwten', 'prijs': 0.70},
+            8: {'categorie': 'koeling', 'product': 'yoghurt', 'prijs': 1.10}}
 
 locations = {1: {'postcode': '2350', 'locatie': 'vosselaar'},
              2: {'postcode': '2440', 'locatie': 'geel'},
@@ -45,43 +42,42 @@ locations = {1: {'postcode': '2350', 'locatie': 'vosselaar'},
              7: {'postcode': '3500', 'locatie': 'hasselt'},
              8: {'postcode': '5300', 'locatie': 'andenne'}}
 
+wanted_products = []
 
-
-@app.get("/{categorie}/{product}/{prijs}")
-async def get_product(categorie: str = Query(default=None), product: str = Query(default="n"), prijs : float = Query(default=0)):
+@app.get("/product/{categorie}")
+async def get_product(categorie: str):
     cat_results = {}
-    prijs_results = {}
     print("categorie: " + categorie)
-    if categorie:
-        for i in products:
-            if categorie == products[i]['categorie']:
-                cat_results[i] = products[i]
-        return cat_results
-    if product:
-        for i in products:
-            if product == products[i]['product']:
-                return products[i]['product'] + products[i]['prijs']
-    if prijs:
-        for i in products:
-            if prijs == products[i]['prijs']:
-                prijs_results[i] = products[i]
-        return prijs_results
+
+    for i in products:
+        if categorie == products[i]['categorie']:
+            cat_results[i] = products[i]
+    if cat_results == {}:
+        return {"error":"categorie bestaat niet"}
+    return cat_results
 
 
-@app.get("/{location}")
+@app.get("/filiaal/{location}")
 async def get_nearby_location(location):
     if location:
         for i in locations:
             if location == locations[i]['postcode']:
-                return locations[i]['postcode'] + " " + locations[i]['locatie']
+                return {"locatie": locations[i]['locatie']}
             return{"error":"no location nearby"}
 
-@app.post("/")
+
+@app.post("/newproduct")
 async def create_product(wanted_product: given_product):
-    wanted_products = {}
-    for i in range(50):
-        if wanted_product.dict() not in wanted_products.values():
-            wanted_products.setdefault(i, wanted_product)
-            return wanted_product
-        return {"error":"product already listed"}
+    if wanted_products != []:
+        for i in wanted_products:
+            if wanted_product.naam in i.split(":")[0]:
+                return {"error": "product already listed"}
+
+    wanted_products.append(wanted_product.naam + ":" + wanted_product.categorie + ":" + str(wanted_product.prijs))
+    return {'product': wanted_product}
+
+
+
+
+
 

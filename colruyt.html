@@ -27,9 +27,8 @@
         <input type="text" x-model="categorie">
         <button @click="getProducts()">Indienen</button>
         Data returned:
-        <strong x-text="product.categorie">Placeholder</strong>
-        <strong x-text="product.product">Placeholder</strong>
-        <strong x-text="product.prijs">Placeholder</strong>
+            <strong x-text="product[0][2].prijs">Placeholder</strong>
+        </div>
     </div>
 </body>
 </html>
